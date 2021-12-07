@@ -12,8 +12,9 @@ public class ObjectLogger : MonoBehaviour
     private TextWriter writer;
 
     // Start is called before the first frame update
-    void Start()
+    public void Begin()
     {
+        OnDestroy();
         int postfix = 0;
         string filename = "";
         do
@@ -26,13 +27,19 @@ public class ObjectLogger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        writer.WriteLine($"{DateTime.Now.Ticks} {transform.position.x} {transform.position.y} {transform.position.z} {transform.rotation.x} {transform.rotation.y} {transform.rotation.z} {transform.rotation.w}");
-        writer.Flush();
+        if (writer != null)
+        {
+            writer.WriteLine($"{DateTime.Now.Ticks} {transform.position.x} {transform.position.y} {transform.position.z} {transform.rotation.x} {transform.rotation.y} {transform.rotation.z} {transform.rotation.w}");
+            writer.Flush();
+        }
     }
 
     private void OnDestroy()
     {
-        writer.Dispose();
-        writer = null;
+        if (writer != null)
+        {
+            writer.Dispose();
+            writer = null;
+        }
     }
 }
