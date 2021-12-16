@@ -11,10 +11,15 @@ public class ObjectLoggerEditor : Editor
     {
         base.OnInspectorGUI();
 
+        var component = target as ObjectLogger;
+
+        GUILayout.Label($"Records {component.Records}");
+
         if(GUILayout.Button("Start"))
         {
-            var component = target as ObjectLogger;
             component.Begin();
         }
+
+        GUILayout.Label(component.LastEntry);
     }
 }
