@@ -11,6 +11,12 @@ public class ObjectLogger : MonoBehaviour
 
     private TextWriter writer;
 
+    // Temporary fix... always start the logger; need to change this to have one event start all logging objects
+    public void Start()
+    {
+        Begin();
+    }
+
     // Start is called before the first frame update
     public void Begin()
     {
@@ -19,7 +25,7 @@ public class ObjectLogger : MonoBehaviour
         string filename = "";
         do
         {
-            filename = Path.Combine(Directory, $"{Name}_{postfix}_{DateTime.Now.ToString("MM-dd-yyyy_H-mm-ss")}.csv");
+            filename = Path.Combine(Directory, $"{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}_{Name}_{postfix}.csv");
         } while (File.Exists(filename));
         writer = new StreamWriter(filename);
     }
@@ -29,7 +35,7 @@ public class ObjectLogger : MonoBehaviour
     {
         if (writer != null)
         {
-            writer.WriteLine($"{DateTime.Now.Ticks} {transform.position.x} {transform.position.y} {transform.position.z} {transform.rotation.x} {transform.rotation.y} {transform.rotation.z} {transform.rotation.w}");
+            writer.WriteLine($"{DateTime.Now.Ticks},{transform.position.x},{transform.position.y},{transform.position.z},{transform.rotation.x},{transform.rotation.y},{transform.rotation.z},{transform.rotation.w}");
             writer.Flush();
         }
     }
